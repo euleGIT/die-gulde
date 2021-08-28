@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageReport scope="Summary">
+  <Summary>
+    <Generatedon>08/28/2021 - 12:08:54</Generatedon>
+    <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
+    <Assemblies>1</Assemblies>
+    <Classes>84</Classes>
+    <Files>70</Files>
+    <Coveredlines>1218</Coveredlines>
+    <Uncoveredlines>1012</Uncoveredlines>
+    <Coverablelines>2230</Coverablelines>
+    <Totallines>4931</Totallines>
+    <Linecoverage>54.6</Linecoverage>
+    <Coveredbranches>0</Coveredbranches>
+    <Totalbranches>0</Totalbranches>
+  </Summary>
+  <Coverage>
+    <Assembly name="Gulde" classes="84" coverage="54.6" coveredlines="1218" coverablelines="2230" totallines="8269" branchcoverage="" coveredbranches="0" totalbranches="0">
+      <Class name="Gulde.Builders.Builder" coverage="100" coveredlines="28" coverablelines="28" totallines="56" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Builders.CityBuilder" coverage="80.4" coveredlines="74" coverablelines="92" totallines="151" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Builders.CompanyBuilder" coverage="95" coveredlines="76" coverablelines="80" totallines="130" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Builders.ItemBuilder" coverage="85.1" coveredlines="23" coverablelines="27" totallines="57" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Builders.LoadAssetAttribute" coverage="0" coveredlines="0" coverablelines="5" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Builders.PlayerBuilder" coverage="75" coveredlines="12" coverablelines="16" totallines="37" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Builders.RecipeBuilder" coverage="100" coveredlines="26" coverablelines="26" totallines="54" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Builders.WorkerHomeBuilder" coverage="75.7" coveredlines="25" coverablelines="33" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Buildings.BuilderComponent" coverage="0" coveredlines="0" coverablelines="127" totallines="242" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Buildings.BuilderMenuComponent" coverage="0" coveredlines="0" coverablelines="6" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Buildings.BuildingComponent" coverage="0" coveredlines="0" coverablelines="3" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Buildings.BuildingLayout" coverage="100" coveredlines="2" coverablelines="2" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Buildings.BuildingLayoutExtensions" coverage="80.9" coveredlines="17" coverablelines="21" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Buildings.BuildSpace" coverage="0" coveredlines="0" coverablelines="2" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Cam.CameraComponent" coverage="0" coveredlines="0" coverablelines="34" totallines="64" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Cities.CityComponent" coverage="100" coveredlines="21" coverablelines="21" totallines="68" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.CartEventArgs" coverage="100" coveredlines="5" coverablelines="5" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.CompanyComponent" coverage="100" coveredlines="59" coverablelines="59" totallines="162" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.CostEventArgs" coverage="100" coveredlines="5" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.EmployeeEventArgs" coverage="100" coveredlines="5" coverablelines="5" totallines="16" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.Employees.EmployeeComponent" coverage="100" coveredlines="50" coverablelines="50" totallines="125" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.Employees.WaitForCompanyReached" coverage="100" coveredlines="11" coverablelines="11" totallines="125" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.Employees.WorkerHomeComponent" coverage="100" coveredlines="4" coverablelines="4" totallines="23" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.HiringEventArgs" coverage="100" coveredlines="7" coverablelines="7" totallines="17" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.MasterComponent" coverage="0" coveredlines="0" coverablelines="3" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Company.ProductionAgentComponent" coverage="0" coveredlines="0" coverablelines="90" totallines="164" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Economy.BillingEventArgs" coverage="0" coveredlines="0" coverablelines="7" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Economy.ExchangeComponent" coverage="20" coveredlines="15" coverablelines="75" totallines="158" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Economy.ExchangeEventArgs" coverage="0" coveredlines="0" coverablelines="9" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Economy.Item" coverage="85.7" coveredlines="6" coverablelines="7" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Economy.MarketComponent" coverage="33.3" coveredlines="6" coverablelines="18" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Economy.WealthComponent" coverage="21.7" coveredlines="15" coverablelines="69" totallines="130" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.EntityComponent" coverage="94.4" coveredlines="17" coverablelines="18" totallines="51" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.EntityEventArgs" coverage="100" coveredlines="2" coverablelines="2" totallines="11" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.EntityRegistryComponent" coverage="100" coveredlines="14" coverablelines="14" totallines="45" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.EntityRendererComponent" coverage="100" coveredlines="9" coverablelines="9" totallines="31" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.LocationEventArgs" coverage="100" coveredlines="5" coverablelines="5" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.MapEventArgs" coverage="0" coveredlines="0" coverablelines="5" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.TravelComponent" coverage="100" coveredlines="25" coverablelines="25" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Entities.WaitForLocationReached" coverage="100" coveredlines="11" coverablelines="11" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Extensions.Vector3Extensions" coverage="100" coveredlines="3" coverablelines="3" totallines="17" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Extensions.Vector3IntExtension" coverage="100" coveredlines="2" coverablelines="2" totallines="13" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Input.Controls" coverage="23.1" coveredlines="16" coverablelines="69" totallines="193" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Inventory.InventoryComponent" coverage="23.8" coveredlines="16" coverablelines="67" totallines="137" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Inventory.InventoryItem" coverage="61.5" coveredlines="16" coverablelines="26" totallines="71" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Inventory.ItemEventArgs" coverage="0" coveredlines="0" coverablelines="7" totallines="17" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Locator" coverage="100" coveredlines="5" coverablelines="5" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Maps.LocationComponent" coverage="75" coveredlines="30" coverablelines="40" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Maps.MapComponent" coverage="67.9" coveredlines="36" coverablelines="53" totallines="123" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Maps.MapRegistry" coverage="50" coveredlines="4" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Maps.MapSelectorComponent" coverage="0" coveredlines="0" coverablelines="12" totallines="29" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.OrientationExtensions" coverage="0" coveredlines="0" coverablelines="5" totallines="30" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Pathfinding.CellEventArgs" coverage="100" coveredlines="2" coverablelines="2" totallines="12" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Pathfinding.NavComponent" coverage="100" coveredlines="18" coverablelines="18" totallines="45" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Pathfinding.NavNode" coverage="90" coveredlines="9" coverablelines="10" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Pathfinding.Pathfinder" coverage="82.5" coveredlines="104" coverablelines="126" totallines="218" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Pathfinding.PathfindingComponent" coverage="88.5" coveredlines="31" coverablelines="35" totallines="109" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Pathfinding.WaitForDestinationReached" coverage="100" coveredlines="11" coverablelines="11" totallines="109" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Player.ActionComponent" coverage="55.5" coveredlines="5" coverablelines="9" totallines="31" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Player.ActionEventArgs" coverage="0" coveredlines="0" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Player.PlayerComponent" coverage="100" coveredlines="7" coverablelines="7" totallines="28" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Prefab" coverage="0" coveredlines="0" coverablelines="1" totallines="9" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Production.AssignmentComponent" coverage="100" coveredlines="50" coverablelines="50" totallines="111" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Production.AssignmentEventArgs" coverage="100" coveredlines="7" coverablelines="7" totallines="19" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Production.ProductionComponent" coverage="70.2" coveredlines="52" coverablelines="74" totallines="153" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Production.ProductionEventArgs" coverage="0" coveredlines="0" coverablelines="7" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Production.ProductionRegistryComponent" coverage="63.6" coveredlines="42" coverablelines="66" totallines="136" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Production.Recipe" coverage="25" coveredlines="4" coverablelines="16" totallines="51" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Timing.TimeComponent" coverage="72" coveredlines="62" coverablelines="86" totallines="273" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Timing.TimeEventArgs" coverage="66.6" coveredlines="6" coverablelines="9" totallines="19" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Timing.WaitForEvening" coverage="100" coveredlines="11" coverablelines="11" totallines="273" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Timing.WaitForMorning" coverage="100" coveredlines="11" coverablelines="11" totallines="273" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Timing.WaitForWorkingHourTicked" coverage="100" coveredlines="11" coverablelines="11" totallines="273" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Timing.WaitForYearTicked" coverage="0" coveredlines="0" coverablelines="11" totallines="273" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Vehicles.CartAgentComponent" coverage="0" coveredlines="0" coverablelines="116" totallines="208" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Vehicles.CartComponent" coverage="100" coveredlines="16" coverablelines="16" totallines="57" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Gulde.Vehicles.ItemOrder" coverage="0" coveredlines="0" coverablelines="7" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="MonoRoutine" coverage="60" coveredlines="42" coverablelines="70" totallines="309" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="MonoRoutine[TReturnType]" coverage="0" coveredlines="0" coverablelines="73" totallines="309" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="MonoRoutineComponent" coverage="100" coveredlines="8" coverablelines="8" totallines="309" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="MonoRoutineEventArgs" coverage="0" coveredlines="0" coverablelines="5" totallines="309" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="MonoRoutineEventArgs[TReturnType]" coverage="0" coveredlines="0" coverablelines="7" totallines="309" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="WaitForCompletion" coverage="100" coveredlines="6" coverablelines="6" totallines="309" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="WaitForCompletion[TReturnType]" coverage="0" coveredlines="0" coverablelines="6" totallines="309" branchcoverage="" coveredbranches="0" totalbranches="0" />
+    </Assembly>
+  </Coverage>
+</CoverageReport>
