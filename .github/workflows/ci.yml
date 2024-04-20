@@ -23,7 +23,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    container: unityci/editor:ubuntu-2022.2.9f1-base-1.0.1
+    container: unityci/editor:ubuntu-2023.2.18f1-base-3.0.1
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -58,7 +58,7 @@ jobs:
     name: SonarCloud
     needs: test
     runs-on: ubuntu-latest
-    container: unityci/editor:ubuntu-2022.2.9f1-base-1.0.1
+    container: unityci/editor:ubuntu-2023.2.18f1-base-3.0.1
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
