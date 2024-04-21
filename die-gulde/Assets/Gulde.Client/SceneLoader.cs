@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Gulde.Client.Model.Groups;
 using Gulde.Client.Model.Scenes;
 using Newtonsoft.Json;
 using Siccity.GLTFUtility;
-using TreeEditor;
 using UnityEngine;
-using static Siccity.GLTFUtility.GLTFAccessor.Sparse;
 
 namespace Gulde.Client
 {

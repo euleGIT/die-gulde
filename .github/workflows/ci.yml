@@ -62,6 +62,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
 
       - name: Cache
         uses: actions/cache@v4
@@ -109,7 +111,7 @@ jobs:
           /n:${{ env.SONAR_PROJECT_NAME }} \
           /o:${{ env.SONAR_PROJECT_ORGANIZATION }} \
           /d:sonar.host.url=https://sonarcloud.io \
-          /d:sonar.login=${{ secrets.SONAR_TOKEN }} \
+          /d:sonar.token=${{ secrets.SONAR_TOKEN }} \
           /d:sonar.exclusions=${{ env.PROJECT_DIR }}/Assets/Plugins/** \
           /d:sonar.scm.provider=git \
           /d:sonar.cs.nunit.reportsPaths=Tests/editmode-results.xml,Tests/playmode-results.xml \
