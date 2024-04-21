@@ -4,6 +4,9 @@ namespace Gulde.Client.Model.Scenes
 {
     internal class SceneElement
     {
+        [JsonProperty("ones_count")]
+        public int OnesCount { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
         
@@ -27,5 +30,8 @@ namespace Gulde.Client.Model.Scenes
 
         public TransformElement TransformElement => ObjectElement is not null ? ObjectElement :
             DummyElement;
+        
+        [JsonProperty("skip_length")]
+        public int SkipLength { get; set; }
     }
 }

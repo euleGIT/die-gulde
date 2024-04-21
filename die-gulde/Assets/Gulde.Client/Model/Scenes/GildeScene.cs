@@ -4,7 +4,10 @@ namespace Gulde.Client.Model.Scenes
 {
     internal class GildeScene
     {
-        [JsonProperty("element_groups")]
-        public SceneElementGroup[] ElementGroups { get; set; }
+        [JsonProperty("scene_elements")]
+        public SceneElement[] SceneElements { get; set; }
+
+        //[JsonProperty("element_groups")]
+        //public SceneElementGroup[] ElementGroups { get; set; }
     }
 }

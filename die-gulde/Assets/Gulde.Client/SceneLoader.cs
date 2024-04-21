@@ -6,7 +6,9 @@ using Gulde.Client.Model.Groups;
 using Gulde.Client.Model.Scenes;
 using Newtonsoft.Json;
 using Siccity.GLTFUtility;
+using TreeEditor;
 using UnityEngine;
+using static Siccity.GLTFUtility.GLTFAccessor.Sparse;
 
 namespace Gulde.Client
 {
@@ -15,14 +17,13 @@ namespace Gulde.Client
         public static void LoadScene(string basePath, string scenePath)
         {
             var objectNames = new Dictionary<string, string>();
-            var groupNames = new Dictionary<string, string>();
-        
+
             var objectsPath = Path.Combine(basePath, "objects");
             var files = Directory.GetFiles(objectsPath, "*.glb", SearchOption.AllDirectories);
 
             foreach (var item in files)
             {
-                var key = Path.GetFileNameWithoutExtension(item);
+                var key = Path.GetFileNameWithoutExtension(item).ToLower();
 
                 if (objectNames.ContainsKey(key))
                     continue;
@@ -30,155 +31,92 @@ namespace Gulde.Client
                 objectNames.Add(key, item);
             }
 
-            var groupsPath = Path.Combine(basePath, "groups");
-            files = Directory.GetFiles(groupsPath, "*.json", SearchOption.AllDirectories);
-
-            foreach (var item in files)
-            {
-                var key = Path.GetFileNameWithoutExtension(item);
-
-                if (groupNames.ContainsKey(key))
-                    continue;
-
-                groupNames.Add(key, item);
-            }
-
-            var groups = new List<GildeGroup>();
-
-            foreach (var (groupName, groupPath) in groupNames)
-            {
-                var groupAsString = File.ReadAllText(groupPath);
-                var group = JsonConvert.DeserializeObject<GildeGroup>(groupAsString);
-                groups.Add(group);
-            }
-
             scenePath = Path.Combine(basePath, scenePath);
             var sceneAsString = File.ReadAllText(scenePath);
 
             var gildeScene = JsonConvert.DeserializeObject<GildeScene>(sceneAsString);
 
-            foreach (var elementGroup in gildeScene.ElementGroups)
-            {
-                LoadElementGroup(elementGroup, objectNames, groups);
-            }
+            LoadSceneElements(gildeScene, objectNames);
         }
 
-        static void PrepareScene(GildeScene scene)
+        static void LoadSceneElements(GildeScene gildeScene, Dictionary<string, string> objects)
         {
-            foreach (var elementGroup in scene.ElementGroups)
-            {
-                for (int i = 1; i < elementGroup.Elements.Count; i++)
-                {
-                    var element = elementGroup.Elements[i];
-                    var objectElement = element.ObjectElement;
-                    var dummyElement = element.DummyElement;
-
-                    if (objectElement is null && dummyElement is null) continue;
-
-                    var definingElement = elementGroup.Elements[i - 1];
-                    for (int j = i - 1; j >= 0; j--)
-                    {
-                        var previousElement = elementGroup.Elements[j];
-                        var previousObjectElement = previousElement.ObjectElement;
-                        var previousDummyElement = previousElement.DummyElement;
-
-                        if ((previousObjectElement is null ||
-                             previousObjectElement.Transform.Position == Vector3.zero) &&
-                            (previousDummyElement is null || previousDummyElement.Transform.Position == Vector3.zero))
-                            continue;
-                        
-                        definingElement = previousElement;
-                        break;
-                    }
-
-                    if (objectElement is not null && objectElement.Transform.Position == Vector3.zero)
-                    {
-                        objectElement.Transform = definingElement.ObjectElement?.Transform ?? definingElement.DummyElement.Transform;
-                    }
-                }
-            }
-        }
-
-        static void LoadElementGroup(SceneElementGroup elementGroup, Dictionary<string, string> objects, List<GildeGroup> groups)
-        {
-            var mainParentObject = LoadParentElement(elementGroup, objects);
-            
             var sceneElementToGameObject = new Dictionary<SceneElement, GameObject>();
-            sceneElementToGameObject.Add(elementGroup.FirstElement, mainParentObject);
 
-            for (var i = 0; i < elementGroup.Elements.Count; i++)
+            var mainParentObject = new GameObject("scene_elements");
+            var currentParent = mainParentObject.transform;
+
+            for (var i = 0; i < gildeScene.SceneElements.Length; i++)
             {
-                var element = elementGroup.Elements[i];
-                var parentElement = elementGroup.FirstElement;
-                var gildeGroup = groups.FirstOrDefault(group => group.Name == element.Name);
-                
-                if (gildeGroup is null)
+                var element = gildeScene.SceneElements[i];
+
+                if (element.OnesCount == 1)
+                    currentParent = mainParentObject.transform;
+
+                if (!currentParent)
                 {
-                    var elementsWithSameName = 0;
-                    // Search for elements before this element that define a group containing this element
-                    for (int j = i - 1; j >= 0; j--)
-                    {
-                        var possibleParentElement = elementGroup.Elements[j];
-                        if (possibleParentElement.Name == element.Name)
-                        {
-                            elementsWithSameName += 1;
-                            continue;
-                        }
-
-                        var group = groups.FirstOrDefault(g =>
-                            g.Name == possibleParentElement.Name || g.Elements.Count > 0 &&
-                            (g.Elements[0].Name == possibleParentElement.Name || 
-                             possibleParentElement.ObjectElement is not null && g.Elements[0].Name == possibleParentElement.ObjectElement.Name));
-                        if (group is null) continue;
-
-                        if (group.Name == "ub_LEUCHTER_3ARM")
-                        {
-                            Debug.Log("");
-                        }
-                        
-                        var groupElement = group.Elements.FirstOrDefault(groupElement => groupElement.Name == element.Name);
-                        if (groupElement is null) continue;
-
-                        var groupElementIndex = group.Elements.IndexOf(groupElement);
-                        if (i - j != groupElementIndex + elementsWithSameName) continue;
-                        
-                        if (group.Name != element.Name)
-                        {
-                            parentElement = possibleParentElement;
-                        }
-                        gildeGroup = group;
-                        break;
-                    }
+                    Debug.LogWarning($"The parent of element \"{element.Name}\" was not found.");
+                    currentParent = mainParentObject.transform;
                 }
 
-                if (!sceneElementToGameObject.ContainsKey(parentElement))
-                {
-                    Debug.LogWarning($"The parent element \"{parentElement.Name}\" of element \"{element.Name}\" was not found.");
-                    continue;
-                }
-                var parentObject = sceneElementToGameObject[parentElement];
                 if (element.TransformElement is not null)
                 {
-                    var gameObject = LoadTransformElement(element, parentObject, objects, gildeGroup);
+                    var gameObject = LoadTransformElement(element, currentParent, objects);
                     sceneElementToGameObject.Add(element, gameObject);
                 }
                 else if (element.CityElement is not null)
                 {
-                    var gameObject = LoadCityElement(element.Width, element.Height, element.CityElement, parentObject);
+                    var gameObject = LoadCityElement(element.Width, element.Height, element.CityElement, currentParent);
                     sceneElementToGameObject.Add(element, gameObject);
                 }
                 else
                 {
                     var gameObject = new GameObject(element.Name);
-                    ApplyTransform(gameObject, null, parentObject, gildeGroup);
+                    ApplyTransform(gameObject, null, currentParent);
                     sceneElementToGameObject.Add(element, gameObject);
                 }
+
+                if (!sceneElementToGameObject[element])
+                    continue;
+
+                if (element.Name == "ordner_BAUKLASSEN_FREI")
+                {
+                    Debug.Log("OIAJSDOI");
+                }
+
+                if (element.SkipLength == 0)
+                    currentParent = sceneElementToGameObject[element].transform;
+                else if (element.SkipLength >= 2)
+                {
+                    if (element.Name.EndsWith("MegaCam"))
+                    {
+                        currentParent = sceneElementToGameObject[element].transform.parent;
+                        continue;
+                    }
+
+                    var elementSkipCount = Mathf.FloorToInt((element.SkipLength - 2) / 4);
+                    currentParent = GetNewParent(sceneElementToGameObject[element].transform, elementSkipCount);
+                }
             }
-            
-            Debug.Log($"Loaded element group \"{elementGroup.FirstElement?.Name}\".");
+
+            Debug.Log("Loaded scene elements.");
         }
 
-        static GameObject LoadTransformElement(SceneElement sceneElement, GameObject parentObject, Dictionary<string, string> objects, GildeGroup gildeGroup = null)
+        static Transform GetNewParent(Transform element, int elementSkipCount)
+        {
+            var siblingCount = element.parent.childCount;
+            var siblingIndex = siblingCount - elementSkipCount;
+
+            if (siblingIndex <= 0)
+            {
+                elementSkipCount -= siblingCount;
+                return GetNewParent(element.parent, elementSkipCount);
+            }
+
+            return element.parent;
+        }
+
+        static GameObject LoadTransformElement(SceneElement sceneElement, Transform parent, Dictionary<string, string> objects)
         {
             var gameObject = (GameObject)null;
             
@@ -188,7 +126,7 @@ namespace Gulde.Client
             }
             else if (sceneElement.TransformElement is ObjectElement objectElement)
             {
-                if (objectElement.Name is not null && objects.TryGetValue(objectElement.Name, out var gltfPath))
+                if (objectElement.Name is not null && objects.TryGetValue(objectElement.Name.ToLower(), out var gltfPath))
                 {
                     gameObject = LoadObject(gltfPath);
 
@@ -208,16 +146,16 @@ namespace Gulde.Client
             if (gameObject is null)
                 return null;
             
-            ApplyTransform(gameObject, sceneElement, parentObject, gildeGroup);
+            ApplyTransform(gameObject, sceneElement, parent);
             
             return gameObject;
         }
 
-        static void ApplyTransform(GameObject gameObject, SceneElement sceneElement = null, GameObject parentObject = null, GildeGroup gildeGroup = null)
+        static void ApplyTransform(GameObject gameObject, SceneElement sceneElement = null, Transform parentObject = null)
         {
             if (parentObject is not null)
             {
-                gameObject.transform.SetParent(parentObject.transform);
+                gameObject.transform.SetParent(parentObject);
             }
             gameObject.transform.localPosition = Vector3.zero;
             gameObject.transform.localRotation = Quaternion.identity;
@@ -226,31 +164,42 @@ namespace Gulde.Client
             if (transformElement is null)
                 return;
             
+            var gildeTransform = gameObject.AddComponent<GildeTransform>();
+            
             var position = new Vector3(-transformElement.Transform.Position.x, transformElement.Transform.Position.y, -transformElement.Transform.Position.z);
-            var rotation = new Vector3(transformElement.Transform.Rotation.x, -transformElement.Transform.Rotation.y,
-                transformElement.Transform.Rotation.z);
+            var rotationRad = new Vector3(transformElement.Transform.Rotation.x, -transformElement.Transform.Rotation.y, transformElement.Transform.Rotation.z);
+            // var rotationRad = new Vector3(0, transformElement.Transform.Rotation.y+ transformElement.Transform.Rotation.x, 0);
+            var rotationDeg = rotationRad * Mathf.Rad2Deg;
+            var hasXZRotation = rotationDeg.x >= 1 || rotationDeg.z >= 1;
+            if (hasXZRotation)
+                rotationDeg.y *= -1;
+            // rotationDeg = Quaternion.Euler(rotationDeg).eulerAngles;
 
-            // if (gildeGroup is not null)
+            gildeTransform.position = position;
+            gildeTransform.rotation = new Vector3(transformElement.Transform.Rotation.x, transformElement.Transform.Rotation.y, transformElement.Transform.Rotation.z) * Mathf.Rad2Deg;
+
+            // if (parentObject)
             // {
-            //     var groupElement = gildeGroup.Elements.FirstOrDefault(element => element.Name == sceneElement.Name);
+            //     var parentGildeTransform = parentObject.GetComponent<GildeTransform>();
             //
-            //     if (groupElement is not null)
+            //     if (parentGildeTransform)
             //     {
-            //         var groupPosition = new Vector3(-groupElement.Transform.Position.x, groupElement.Transform.Position.y, -groupElement.Transform.Position.z);
-            //         var groupRotation = new Vector3(groupElement.Transform.Rotation.x, -groupElement.Transform.Rotation.y,
-            //             groupElement.Transform.Rotation.z);
-            //         
-            //         position += groupPosition;
-            //         rotation += groupRotation;
+            //         rotationDeg += parentGildeTransform.rotation;
             //     }
             // }
-
+            
             gameObject.transform.localPosition = position;
-            gameObject.transform.localRotation = Quaternion.Euler(Mathf.Rad2Deg * rotation);
+            gameObject.transform.localEulerAngles = rotationDeg;
             gameObject.transform.localScale = Vector3.one;
+
+            if (sceneElement?.Name == "ordner_LICHT_INNEN")
+            {
+                Debug.Log($"Actual Rotation: {gameObject.transform.eulerAngles}");
+                Debug.Log($"Gilde Rotation: {gildeTransform.rotation}");
+            }
         }
         
-        static GameObject LoadCityElement(int width, int height, CityElement cityElement, GameObject parentObject)
+        static GameObject LoadCityElement(int width, int height, CityElement cityElement, Transform parentObject)
         {
             var terrainObject = new GameObject("Terrain");
             terrainObject.transform.SetParent(parentObject.transform);
@@ -276,51 +225,22 @@ namespace Gulde.Client
             return terrainObject;
         }
 
-        static GameObject LoadParentElement(SceneElementGroup elementGroup, Dictionary<string, string> objects)
-        {
-            var parentObject = new GameObject(elementGroup.FirstElement.Name);
-            var sceneElement = elementGroup.FirstElement;
-            var transformElement = sceneElement.TransformElement;
-
-            if (sceneElement is null)
-            {
-                Debug.LogWarning("Element group has no first element.");
-                return null;
-            }
-            
-            if (transformElement is not null)
-            {
-                ApplyTransform(parentObject, sceneElement);
-                
-                if (transformElement is not ObjectElement objectElement ||
-                    objectElement.Name == null ||
-                    !objects.TryGetValue(objectElement.Name, out var gltfPath)) return parentObject;
-                
-                var childObject = Importer.LoadFromFile(gltfPath, Format.GLB);
-                var name = transformElement is ObjectElement element
-                    ? element.Name
-                    : sceneElement.Name;
-                childObject.name = name;
-                ApplyTransform(childObject, null, parentObject);
-            }
-            else if (sceneElement.CityElement is not null)
-            {
-                LoadCityElement(elementGroup.FirstElement.Width, elementGroup.FirstElement.Height, elementGroup.FirstElement.CityElement, parentObject);
-            }
-
-            return parentObject;
-        }
-
         static GameObject LoadObject(string path)
         {
+            if (path.EndsWith("ub_BLUMEN.glb"))
+                return new GameObject("Blumen");
+
+            if (path.EndsWith("ub_KRAUT.glb"))
+                return new GameObject("Kraut");
+
             try
             {
                 return Importer.LoadFromFile(path);
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
-                return null;
+                Debug.LogWarning($"Could not load object {path}\n{e}");
+                return new GameObject($"[Error] {Path.GetFileNameWithoutExtension(path)}");
             }
         }
     }
