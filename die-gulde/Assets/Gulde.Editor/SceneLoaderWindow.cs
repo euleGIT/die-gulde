@@ -12,10 +12,19 @@ namespace Gulde.Editor
         string basePath = "";
         string scenePath = "";
 
+        const string ScenePathKey = "LastScenePath";
+        const string BasePathKey = "LastBasePath";
+
         [MenuItem("Tools/Scene Loader")]
         public static void ShowWindow()
         {
             GetWindow<SceneLoaderWindow>("Scene Loader");
+        }
+
+        void OnEnable()
+        {
+            scenePath = PlayerPrefs.GetString(ScenePathKey);
+            basePath = PlayerPrefs.GetString(BasePathKey);
         }
 
         void OnGUI()
@@ -37,8 +46,12 @@ namespace Gulde.Editor
                 var sceneName = Path.GetFileNameWithoutExtension(scenePath);
                 var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 scene.name = sceneName;
-                
+
                 SceneLoader.LoadScene(basePath, scenePath);
+
+                PlayerPrefs.SetString(BasePathKey, basePath);
+                PlayerPrefs.SetString(ScenePathKey, scenePath);
+                PlayerPrefs.Save();
             }
         }
     }

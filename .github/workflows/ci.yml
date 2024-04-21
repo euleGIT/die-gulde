@@ -4,9 +4,9 @@ env:
   PROJECT_DIR: die-gulde
   PROJECT_NAME: die-gulde
   PROJECT_FRIENDLY_NAME: Die Gulde
-  SONAR_PROJECT_KEY: EuleMitKeule_die-gulde
+  SONAR_PROJECT_KEY: europa1400-community_die-gulde
   SONAR_PROJECT_NAME: die-gulde
-  SONAR_PROJECT_ORGANIZATION: eule
+  SONAR_PROJECT_ORGANIZATION: europa1400-community
 
 on:
   push:
@@ -23,13 +23,13 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    container: unityci/editor:ubuntu-2022.2.9f1-base-1.0.1
+    container: unityci/editor:ubuntu-2023.2.18f1-base-3.0.1
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.PROJECT_DIR }}/Library
           key: Library-${{ hashFiles('${{ env.PROJECT_DIR }}/Assets/**', '${{ env.PROJECT_DIR }}/Packages/**', '${{ env.PROJECT_DIR }}/ProjectSettings/**') }}
@@ -41,14 +41,14 @@ jobs:
 
       - name: Run editor Tests
         run: unity-editor -nographics -logFile /dev/stdout -projectPath ${{ env.PROJECT_DIR }} -runTests -testPlatform editmode -testResults Tests/editmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization
-        timeout-minutes: 20
+        timeout-minutes: 30
 
       - name: Run play Tests
         run: unity-editor -nographics -logFile /dev/stdout -projectPath ${{ env.PROJECT_DIR }} -runTests -testPlatform playmode -testResults Tests/playmode-results.xml -enableCodeCoverage -coverageResultsPath Tests -debugCodeOptimization
-        timeout-minutes: 20
+        timeout-minutes: 30
 
       - name: Store results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Test Results
@@ -58,13 +58,13 @@ jobs:
     name: SonarCloud
     needs: test
     runs-on: ubuntu-latest
-    container: unityci/editor:ubuntu-2022.2.9f1-base-1.0.1
+    container: unityci/editor:ubuntu-2023.2.18f1-base-3.0.1
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.PROJECT_DIR }}/Library
           key: Library-${{ hashFiles('${{ env.PROJECT_DIR }}/Assets/**', '${{ env.PROJECT_DIR }}/Packages/**', '${{ env.PROJECT_DIR }}/ProjectSettings/**') }}
@@ -84,7 +84,7 @@ jobs:
           java-version: "17"
 
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "6.0.x"
 
@@ -93,7 +93,7 @@ jobs:
 
       - name: Download test results
         id: test-results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Test Results
           path: Tests
@@ -125,7 +125,7 @@ jobs:
       releaseCreated: ${{ steps.version.outputs.new-release-published }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -158,10 +158,10 @@ jobs:
           ["StandaloneWindows64", "StandaloneOSX", "StandaloneLinux64"]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.PROJECT_DIR }}/Library
           key: Library-${{ hashFiles('${{ env.PROJECT_DIR }}/Assets/**', '${{ env.PROJECT_DIR }}/Packages/**', '${{ env.PROJECT_DIR }}/ProjectSettings/**') }}
@@ -169,7 +169,7 @@ jobs:
             Library-
 
       - name: Build ${{ matrix.buildTarget }}
-        uses: game-ci/unity-builder@v2
+        uses: game-ci/unity-builder@v4
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -190,7 +190,7 @@ jobs:
           sudo mv Builds/${{ matrix.buildTarget }} ${{ env.PROJECT_NAME }}-${{ matrix.buildTarget }}
 
       - name: Upload build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}-${{ matrix.buildTarget }}
           path: ${{ env.PROJECT_NAME }}-${{ matrix.buildTarget }}
@@ -205,7 +205,7 @@ jobs:
       version: ${{ steps.release.outputs.release-version }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -243,10 +243,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}-${{ matrix.buildTarget }}
           path: ${{ env.PROJECT_NAME }}-${{ matrix.buildTarget }}
